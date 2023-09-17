@@ -1,15 +1,17 @@
 #pragma once
 #include <string>
+#include "node.h"
 const int MAX = 100;
-class Stack {
+template <typename T> class Stack {
 private:
 	int top;
-	std::string array[MAX];
+	T array[MAX];
 public:
 	Stack();
-	bool push(std::string x);
-	std::string pop();
-	std::string peek();
+	bool push(T x);
+	T pop();
+	T peek();
 	bool isEmpty();
 	bool isFull();
 };
+

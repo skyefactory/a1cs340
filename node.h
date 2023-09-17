@@ -1,18 +1,14 @@
 #pragma once
-
+#include <string>
 class Node {
-private:
-		char datum;
-		Node* left;
-		Node* right;
 public:
-		Node();
-		Node(char data);
-		Node(char data, Node* left, Node* right);
-		char getData();
-		Node* getLeft();
-		Node* getRight();
-		void setLeft(Node* left);
-		void setRight(Node* right);
-		void setData(char data);
+	Node();
+	Node(std::string data);
+	Node(std::string data, Node* left, Node* right);
+	std::string datum;
+	Node* left;
+	Node* right;
 };
+
+Node* buildTree(std::string exp);
+void printBT(const std::string& prefix, const Node* node, bool isLeft);

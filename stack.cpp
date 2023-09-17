@@ -1,11 +1,10 @@
 #include "stack.h"
-#include <string>
-Stack::Stack() {
+template <typename T> Stack<T>::Stack() {
 	// -1 means empty so init to top var to -1.
 	top = -1;
 }
 
-bool Stack::isEmpty() {
+template <typename T> bool Stack<T>::isEmpty() {
 	// -1 means empty
 	if (top == -1) {
 		return true;
@@ -13,14 +12,14 @@ bool Stack::isEmpty() {
 	return false;
 }
 
-bool Stack::isFull() {
+template <typename T> bool Stack<T>::isFull() {
 	if (top == MAX - 1) {
 		return true;
 	}
 	return false;
 }
 
-bool Stack::push(std::string x) {
+template <typename T> bool Stack<T>::push(T x) {
 	if (isFull()) {
 		return false;
 	}
@@ -29,17 +28,20 @@ bool Stack::push(std::string x) {
 	return true;
 }
 
-std::string Stack::pop()
+template <typename T> T Stack<T>::pop()
 {
 	if (!isEmpty()) {
-		std::string x = array[top];
+		T x = array[top];
 		top--;
 		return x;
 	}
-	return "";
 }
 
-std::string Stack::peek() {
+template <typename T> T Stack<T>::peek() {
 	return array[top];
 
 }
+
+template class Stack<int>;
+template class Stack<std::string>;
+template class Stack<Node*>;
