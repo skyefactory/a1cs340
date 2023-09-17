@@ -1,14 +1,13 @@
 #include "stack.h"
 #include "conversions.h"
 #include "node.h"
-#include <string>
 
 std::string infixToPostfix(std::string infix)
 {
 	// Infix: A + B * C + D 
 	// Postfix: A B C * + D +
 
-	Stack stack;
+	Stack<std::string> stack;
 	std::string out = "";
 
 	for (int i = 0; i < infix.length(); i++)
@@ -22,7 +21,7 @@ std::string infixToPostfix(std::string infix)
 		{
 			while (stack.peek() != "(")
 			{
-				out += stack.pop();
+				out += (' ' + stack.pop() + ' ');
 			}
 			stack.pop();
 		}
@@ -36,7 +35,7 @@ std::string infixToPostfix(std::string infix)
 				stack.push(std::string(1,infix[i]));
 			else if (stack.peek() == "*" || stack.peek() == "/")
 			{
-				out += stack.pop();
+				out += (' ' + stack.pop() + ' ');
 				stack.push(std::string(1, infix[i]));
 			}
 		}
@@ -48,7 +47,7 @@ std::string infixToPostfix(std::string infix)
 				stack.push(std::string(1, infix[i]));
 			else {
 				while (!stack.isEmpty() && stack.peek() != "(")
-					out += stack.pop();
+					out += (' ' + stack.pop() + ' ');
 				stack.push(std::string(1, infix[i]));
 			}
 		}
@@ -56,7 +55,8 @@ std::string infixToPostfix(std::string infix)
 		//OPERANDS
 		else
 		{
-			out += infix[i];
+			if (infix[i] != ' ')
+				out += (' ' + infix[i] + ' ');
 		}
 	}
 
@@ -69,47 +69,9 @@ std::string infixToPostfix(std::string infix)
 	return out;
 }
 
-std::string postfixToInfix(std::string postfix)
-{
-	Stack stack;
-	for (int i = 0; i < postfix.length(); i++) {
-		if (postfix[i] == '*' || postfix[i] == '/' || postfix[i] == '+' || postfix[i] == '-')
-		{
-			std::string op1 =  stack.pop();
-			std::string op2 =  stack.pop();
-			std::string temp = "(" + op2 + postfix[i] + op1 + ")";
-			 stack.push(temp);
-		}
-		else
-		{
-			 stack.push(std::string(1,postfix[i]));
-		}	
-	}
-	return  stack.pop();
-}
-
-std::string postfixToPrefix(std::string postfix)
-{
-	Stack stack;
-	for (int i = 0; i < postfix.length(); i++) {
-		if (postfix[i] == '+' || postfix[i] == '-' || postfix[i] == '*' || postfix[i] == '/')
-		{
-			std::string op1 = stack.pop();
-			std::string op2 = stack.pop();
-			std::string temp = postfix[i] + op2 + op1;
-			stack.push(temp);
-		}
-		else
-		{
-			stack.push(std::string(1, postfix[i]));
-		}
-	}
-	return stack.pop();
-}
-
 std::string prefixToPostfix(std::string prefix)
 {
-	Stack stack;
+	Stack<std::string> stack;
 	for (int i = prefix.length() - 1; i >= 0; i--) {
 		if (prefix[i] == '*' || prefix[i] == '/' || prefix[i] == '+' || prefix[i] == '-') {
 			std::string op1 = stack.pop();
@@ -125,12 +87,24 @@ std::string prefixToPostfix(std::string prefix)
 	return stack.pop();
 }
 
-std::string infixToPrefix(std::string infix)
-{
-	return postfixToPrefix(infixToPostfix(infix));
+std::string postfixToInfix(Node* expressionTree) {
+	if(expressionTree->left == nullptr || expressionTree->right == nullptr)
+		return expressionTree->datum;
+	else
+		return "(" + postfixToInfix(expressionTree->left) + expressionTree->datum + postfixToInfix(expressionTree->right) + ")";
 }
 
-std::string prefixToInfix(std::string prefix)
-{
-	return postfixToInfix(prefixToPostfix(prefix));
+std::string postfixToPrefix(Node* expressionTree) {
+	if (expressionTree->left == nullptr || expressionTree->right == nullptr)
+		return expressionTree->datum;
+	else
+		return expressionTree->datum + postfixToPrefix(expressionTree->left) + postfixToPrefix(expressionTree->right);
+}
+
+std::string infixToPrefix(std::string infix) {
+	return postfixToPrefix(buildTree(infixToPostfix(infix)));
+}
+
+std::string prefixToInfix(std::string prefix) {
+	return postfixToInfix(buildTree(prefixToPostfix(prefix)));
 }

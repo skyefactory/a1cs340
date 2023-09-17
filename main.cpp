@@ -5,6 +5,7 @@
 */
 
 #include "conversions.h"
+#include "node.h"
 #include <iostream>
 #include <string>
 using namespace std;
@@ -26,6 +27,8 @@ int main() {
 	string i1, i2;
 	string exp ="";
 
+// Silly control flow management to allow for easy navigation and smoothness
+
 begin:
 	cout << "Welcome \n";
 	goto input;
@@ -42,7 +45,6 @@ prefix:
 	cout << "Your expression is: " + exp + " \n What would you like to do ? \n(1) Prefix to Infix \n(2) Prefix to Postfix \n(3) Prefix to Visual Tree \n(4) Evauluate Prefix \n(5) Back \n(6) Exit Program \n";
 	getline(cin, i2);
 	if(i2 == "1"){
-		exp = prefixToInfix(exp);
 		goto infix;
 	}
 	if (i2 == "2") {
@@ -51,7 +53,10 @@ prefix:
 		goto postfix;
 	}
 	if (i2 == "3")
-		exp = "Not Implemented";
+	{
+		printBT("", buildTree(prefixToPostfix(exp)), false);
+	}
+		
 	if (i2 == "4")
 		exp = "Not Implemented";
 	if (i2 == "5") {
@@ -69,16 +74,18 @@ postfix:
 	cout << "Your expression is: " + exp + " \n What would you like to do ? \n(1) Postfix to Infix \n(2) Postfix to Prefix \n(3) Postfix to Visual Tree \n(4) Evauluate Postfix \n(5) Back \n(6) Exit Program \n";
 	getline(cin, i2);
 	if (i2 == "1") {
-		exp = postfixToInfix(exp);
+		exp = postfixToInfix(buildTree(exp));
 		goto infix;
 	}
 	if (i2 == "2") {
-		exp = postfixToPrefix(exp);
 		i1 = "", i2 = "";
 		goto prefix;
 	}
 	if (i2 == "3")
-		exp = "Not Implemented";
+	{
+		printBT("", buildTree(exp), false);
+		goto postfix;
+	}
 	if (i2 == "4")
 		exp = "Not Implemented";
 	if (i2 == "5"){
@@ -89,7 +96,7 @@ postfix:
 		goto exit;
 infix:
 	if (exp == "") {
-		cout << "Please enter a postfix expression: \n";
+		cout << "Please enter a infix expression: \n";
 		getline(cin, exp);
 	}
 	cout << "Your expression is: " + exp + " \n What would you like to do ? \n(1) Infix to Postfix \n(2) Infix to Prefix \n(3) Infix to Visual Tree \n(4) Evauluate Infix \n(5) Back \n(6) Exit Program \n";
@@ -99,12 +106,11 @@ infix:
 		goto postfix;
 	}
 	if (i2 == "2") {
-		exp = infixToPrefix(exp);
 		i1 = "", i2 = "";
 		goto prefix;
 	}
 	if (i2 == "3")
-		exp = "Not Implemented";
+		printBT("", buildTree(infixToPostfix(exp)), false);
 	if (i2 == "4")
 		exp = "Not Implemented";
 	if (i2 == "5") {
