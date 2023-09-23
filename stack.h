@@ -8,6 +8,7 @@ private:
 	T array[MAX];
 public:
 	Stack();
+	~Stack();
 	bool push(T x);
 	T pop();
 	T peek();

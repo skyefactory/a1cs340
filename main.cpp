@@ -39,28 +39,36 @@ exit:
 
 prefix:
 	if (exp == "") {
-		cout << "Please enter a postfix expression: \n";
+		cout << "Please enter a prefix expression: \n";
 		getline(cin, exp);
+		if (exp == "" || exp == " "){
+			cout<<"No input detected, try again\n";
+			exp = ""; goto prefix;
+		}
 	} 
+	
 	cout << "Your expression is: " + exp + " \n What would you like to do ? \n(1) Prefix to Infix \n(2) Prefix to Postfix \n(3) Prefix to Visual Tree \n(4) Evauluate Prefix \n(5) Back \n(6) Exit Program \n";
 	getline(cin, i2);
 	if(i2 == "1"){
+		i1 = "", i2="";
+		exp = prefixToInfix(exp);
 		goto infix;
 	}
 	if (i2 == "2") {
-		exp = prefixToPostfix(exp);
 		i1 = "", i2 = "";
+		exp = prefixToPostfix(exp);
 		goto postfix;
 	}
 	if (i2 == "3")
 	{
 		printBT("", buildTree(prefixToPostfix(exp)), false);
+		goto prefix;
 	}
 		
 	if (i2 == "4")
 		exp = "Not Implemented";
 	if (i2 == "5") {
-		i1 = "", i2 = "";
+		i1 = "", i2 = "", exp = "";
 		goto input;
 	}
 	if (i2 == "6")
@@ -70,6 +78,11 @@ postfix:
 	if (exp == "") {
 		cout << "Please enter a postfix expression: \n";
 		getline(cin, exp);
+		if (exp == "" || exp == " "){
+			cout<<"No input detected, try again\n";
+			exp = ""; 
+			goto postfix;
+		}
 	}
 	cout << "Your expression is: " + exp + " \n What would you like to do ? \n(1) Postfix to Infix \n(2) Postfix to Prefix \n(3) Postfix to Visual Tree \n(4) Evauluate Postfix \n(5) Back \n(6) Exit Program \n";
 	getline(cin, i2);
@@ -79,6 +92,7 @@ postfix:
 	}
 	if (i2 == "2") {
 		i1 = "", i2 = "";
+		exp = postfixToPrefix(buildTree(exp));
 		goto prefix;
 	}
 	if (i2 == "3")
@@ -89,7 +103,7 @@ postfix:
 	if (i2 == "4")
 		exp = "Not Implemented";
 	if (i2 == "5"){
-		i1 = "", i2 = "";
+		i1 = "", i2 = "", exp = "";
 		goto input;
 	}
 	if (i2 == "6")
@@ -98,23 +112,30 @@ infix:
 	if (exp == "") {
 		cout << "Please enter a infix expression: \n";
 		getline(cin, exp);
+		if (exp == "" || exp == " "){
+			cout<<"No input detected, try again\n";
+			exp = ""; goto infix;
+		}
 	}
 	cout << "Your expression is: " + exp + " \n What would you like to do ? \n(1) Infix to Postfix \n(2) Infix to Prefix \n(3) Infix to Visual Tree \n(4) Evauluate Infix \n(5) Back \n(6) Exit Program \n";
 	getline(cin, i2);
 	if (i2 == "1") {
+		i1 = "", i2 = "";
 		exp = infixToPostfix(exp);
 		goto postfix;
 	}
 	if (i2 == "2") {
 		i1 = "", i2 = "";
+		exp = infixToPrefix(exp);
 		goto prefix;
 	}
-	if (i2 == "3")
+	if (i2 == "3"){
 		printBT("", buildTree(infixToPostfix(exp)), false);
+		goto infix;
+	}
 	if (i2 == "4")
 		exp = "Not Implemented";
 	if (i2 == "5") {
-		i1 = "", i2 = "";
 		goto input;
 	}
 	if (i2 == "6")
@@ -122,6 +143,8 @@ infix:
 
 invalid:
 	cout << "Invalid Input, clearing. Please try again. \n";
+		exp = "", i1 = "", i2 = "";
+		goto input;
 
 input:
 	exp = "", i1 = "", i2 = "";

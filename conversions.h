@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "Node.h"
+#include "node.h"
 
 std::string infixToPostfix(std::string infix);
 std::string prefixToPostfix(std::string prefix);

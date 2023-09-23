@@ -4,6 +4,14 @@ template <typename T> Stack<T>::Stack() {
 	top = -1;
 }
 
+template <typename T> Stack<T>::~Stack(){}
+template <> Stack<Node*>::~Stack()
+{
+	//Precaution since I use heap in constructing stack for nodes. Dont want any memory leaking so specialized delete function for Stack<Node*>
+	for(int i = 0 ; i < top; i++)
+		delete array[i];
+}
+
 template <typename T> bool Stack<T>::isEmpty() {
 	// -1 means empty
 	if (top == -1) {
@@ -30,18 +38,19 @@ template <typename T> bool Stack<T>::push(T x) {
 
 template <typename T> T Stack<T>::pop()
 {
+	T x;
 	if (!isEmpty()) {
-		T x = array[top];
+		x = array[top];
 		top--;
-		return x;
 	}
+	return x;
 }
 
 template <typename T> T Stack<T>::peek() {
 	return array[top];
 
 }
-
 template class Stack<int>;
 template class Stack<std::string>;
 template class Stack<Node*>;
+

@@ -3,9 +3,9 @@
 class Node {
 public:
 	Node();
-	Node(std::string data);
-	Node(std::string data, Node* left, Node* right);
-	std::string datum;
+	Node(char data);
+	Node(char data, Node* left, Node* right);
+	char datum;
 	Node* left;
 	Node* right;
 };

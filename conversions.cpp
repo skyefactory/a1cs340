@@ -1,8 +1,8 @@
 #include "stack.h"
 #include "conversions.h"
 #include "node.h"
-
-std::string infixToPostfix(std::string infix)
+//Use Stack
+std::string infixToPostfix(std::string infix)	
 {
 	// Infix: A + B * C + D 
 	// Postfix: A B C * + D +
@@ -56,7 +56,7 @@ std::string infixToPostfix(std::string infix)
 		else
 		{
 			if (infix[i] != ' ')
-				out += (' ' + infix[i] + ' ');
+				out += (" " + std::string(1,infix[i]) + " ");
 		}
 	}
 
@@ -86,19 +86,17 @@ std::string prefixToPostfix(std::string prefix)
 	}
 	return stack.pop();
 }
+//Use ExpressionTree 
 
+//In Order
 std::string postfixToInfix(Node* expressionTree) {
-	if(expressionTree->left == nullptr || expressionTree->right == nullptr)
-		return expressionTree->datum;
-	else
-		return "(" + postfixToInfix(expressionTree->left) + expressionTree->datum + postfixToInfix(expressionTree->right) + ")";
+	if(expressionTree == nullptr) return "";
+	else return ('(' +  postfixToInfix(expressionTree->left) + expressionTree->datum + postfixToInfix(expressionTree->left) + ')');
 }
-
+// Pre Order
 std::string postfixToPrefix(Node* expressionTree) {
-	if (expressionTree->left == nullptr || expressionTree->right == nullptr)
-		return expressionTree->datum;
-	else
-		return expressionTree->datum + postfixToPrefix(expressionTree->left) + postfixToPrefix(expressionTree->right);
+	if(expressionTree == nullptr) return "";
+	else return (expressionTree->datum + postfixToInfix(expressionTree->left) + postfixToInfix(expressionTree->left));
 }
 
 std::string infixToPrefix(std::string infix) {

@@ -11,14 +11,14 @@ Node::Node()
 
 }
 
-Node::Node(std::string data)
+Node::Node(char data)
 {
     datum = data;
     left = nullptr;
     right = nullptr;
 }
 
-Node::Node(std::string data, Node* lft, Node* rght)
+Node::Node(char data, Node* rght, Node* lft)
 {
     datum = data;
     left = lft;
@@ -28,30 +28,15 @@ Node::Node(std::string data, Node* lft, Node* rght)
 Node* buildTree(std::string exp)
 {
     Stack<Node*> stack;
-    Node* node = nullptr;
-    for (int i = 0; i < exp.length(); i++)
-    {
-        if(exp[i] == '+' || exp[i] == '-' || exp[i] == '*' || exp[i] == '/')
-		{
-			Node* right = stack.pop();
-			Node* left = stack.pop();
-			node = new Node(std::string(1,exp[i]), left, right);
-			stack.push(node);
-		}
-		else
-		{
-            std::string operand = "";
-            while(i < exp.length() && !(exp[i] == '+' || exp[i] == '-' || exp[i] == '*' || exp[i] == '/'))
-			{
-				operand += exp[i];
-				i++;
-			}
-			node = new Node(operand);
-			stack.push(node);
-		}
+    for (int i = 0; i < exp.length(); i++) {
+        if ( exp[i] == '+' || exp[i] == '-' || exp[i] == '*' || exp[i] == '/'){
+            stack.push(new Node(exp[i], stack.pop(), stack.pop()));
+        }
+        else if (exp[i] != ' '){
+            stack.push(new Node(exp[i]));
+        }
     }
-    delete node;
-    return stack.pop();
+        return stack.pop();
 }
 
 void printBT(const std::string& prefix, const Node* node, bool isLeft)
@@ -60,10 +45,10 @@ void printBT(const std::string& prefix, const Node* node, bool isLeft)
     {
         std::cout << prefix;
 
-        std::cout << (isLeft ? "|---" : "L___");
+        std::cout << (isLeft ? "R---" : "L---");
 
         // print the value of the node
-        std::cout << node->datum << std::endl;
+        std::cout << "[ " << node->datum <<" ]" << std::endl;
 
         // enter the next tree level - left and right branch
         printBT(prefix + (isLeft ? "|   " : "    "), node->left, true);
