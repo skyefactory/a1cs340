@@ -1,5 +1,6 @@
 #include "../header/expressiontree.h"
 #include <iostream>
+#include <cmath>
 #define error INT_MAX;
 
 
@@ -13,7 +14,8 @@ int calculate(int A, int B, char op)
         case('*'):
             return A * B;
         case('/'):
-            return A / B;
+        //type casting.
+            return round(double(A) / double(B));
         default:
             return error; 
     }
@@ -32,4 +34,5 @@ int evauluateTree(Node* tree){
                 return (calculate(evauluateTree(tree->right), evauluateTree(tree->left), tree->datum[0])) ;
             }
         }
+            return -1;
 }

@@ -8,6 +8,7 @@ bool isOperator(char ch){
 	return (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '(' || ch == ')');
 }
 //Use Stack
+
 std::string infixToPostfix(std::string infix)	
 {
 	// Infix: A + B * C + D 
@@ -81,7 +82,7 @@ std::string prefixToPostfix(std::string prefix)
 	Stack<std::string> stack;
 	for (int i = prefix.length() - 1; i >= 0; i--) 
 	{
-		if(prefix[i] == '*' || prefix[i] == '/' || prefix[i] == '+' || prefix[i] == '-')
+		if(isOperator(prefix[i]))
 		{
 			std::string a = stack.pop();
 			std::string b = stack.pop();
@@ -105,7 +106,7 @@ std::string prefixToPostfix(std::string prefix)
 }
 //Use ExpressionTree 
 
-//In Order
+	// In Order traversal
 std::string postfixToInfix(Node* expressionTree) {
 	if(expressionTree->right == nullptr || expressionTree->left == nullptr) 
 		return expressionTree->datum;
@@ -113,7 +114,7 @@ std::string postfixToInfix(Node* expressionTree) {
 	std::string b = postfixToInfix(expressionTree->left);
 	return (("( "+a + " " + expressionTree->datum + " " + b + " )")); 
 }
-// Pre Order
+	// Pre Order traversal
 std::string postfixToPrefix(Node* expressionTree) {
 	if(expressionTree->right == nullptr || expressionTree->left == nullptr) 
 		return expressionTree->datum;
@@ -122,10 +123,11 @@ std::string postfixToPrefix(Node* expressionTree) {
 	return (expressionTree->datum + " " + a + " " + b);
 }
 
+	// infixToPostfix -> build tree from postfix -> pre order traversal
 std::string infixToPrefix(std::string infix) {
 	return postfixToPrefix(buildTree(infixToPostfix(infix)));
 }
-
+	// prefixToPostfix -> build tree from postfix -> in order traversal.
 std::string prefixToInfix(std::string prefix) {
 	return postfixToInfix(buildTree(prefixToPostfix(prefix)));
 }
